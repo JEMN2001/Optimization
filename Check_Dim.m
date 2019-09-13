@@ -1,4 +1,4 @@
-function [] = Check_Dim(c,A,b,m,n)
+function [] = Check_Dim(c,b,m,n)
     %Checks if there is the same number of costs as variables, if not, throws error
     if (size(c) ~= n)
         error('The length of c and A are not the same!');
