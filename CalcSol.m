@@ -20,7 +20,7 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini)
             end
             k = k(1);
             Yk = Yn(:,k);
-            if (isequal((Yk <= 0),ones(1,length(Yk))))
+            if (isequal((Yk <= 0),ones(length(Yk),1)))
                 error("The problem has no finite optimal")
             end
             tmp = b2./Yk;
