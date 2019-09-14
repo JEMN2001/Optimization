@@ -1,4 +1,4 @@
-function [Ib,In,b2] = CalcSol(c,A,b,Ib,In)
+function [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini)
         B = A(:,Ib);
         N = A(:,In);
         Cb = c(:,Ib);
@@ -7,8 +7,17 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In)
         Zn = Cb*Yn;
         Cn2 = Cn-Zn;
         b2 = inv(B)*b';
-        while (ismember(1,(Cn2 < 0)))
-            [ck,k] = min(Cn2); %Then Ik enters the base
+        if (mini == 0)
+            condicion = ismember(1,(Cn2 > 0));
+        else
+            condicion = ismember(1,(Cn2 < 0));
+        end
+        while (condicion)
+            if (mini == 0)
+                [ck,k] = max(Cn2); %Then Ik enters the base
+            else
+                [ck,k] = min(Cn2); %Then Ik enters the base
+            end
             k = k(1);
             Yk = Yn(:,k);
             if (isequal((Yk <= 0),ones(1,length(Yk))))
@@ -16,7 +25,7 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In)
             end
             tmp = b2./Yk;
             for i = 1:length(tmp)
-                if (tmp(i) < 0)
+                if (Yk(i) <= 0)
                     tmp(i) = Inf;
                 end
             end
@@ -35,6 +44,11 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In)
             Zn = Cb*Yn;
             Cn2 = Cn-Zn;
             b2 = inv(B)*b';
+            if (mini == 0)
+            condicion = ismember(1,(Cn2 > 0));
+        else
+            condicion = ismember(1,(Cn2 < 0));
+        end
         end
 end
 
