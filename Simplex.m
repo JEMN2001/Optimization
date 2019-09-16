@@ -24,41 +24,28 @@ function [X,C] = Simplex(c,A,b,verbose,mini)
 
     if (verbose)
         fprintf('\nThis is the beginning of Phase 1')
-        fprintf('\nA =')
+        fprintf('\nA = \n')
         disp(A2)
-        fprintf('\nc2 =')
+        fprintf('\nc2 = \n ')
         disp(c2)
-        fprintf('\nBasic Indexes (Ib) =')
+        fprintf('\nBasic Indexes (Ib) = \n')
         disp(Ib)
-        fprintf('\nNon Basic Indexes (In) =')
+        fprintf('\nNon Basic Indexes (In) = \n')
         disp(In)
     end
 
 
     [Ib,In,b2] = CalcSol(c2,A2,b,Ib,In,verbose,1);
 
-    if (verbose)
-        fprintf('\nResults of phase 1 are:')
-        fprintf('\nIb =')
-        disp(Ib)
-        fprintf('\nIn =')
-        disp(In)
-        fprintf('\nb =')
-        disp(b2)
-    end
-
     %Starting Phase 2
 
-    if (verbose)
-        fprintf('\nThis is the beginning of Phase 2')
-    end
 
     if (max(Ib) < n+1)
         In = In(1:n-m);
     else
         for i = 1:length(Ib)
             if (Ib(i) > n && b2(i) > 0)
-                error ("El problema no es factible");
+                error ("The problem isn't faesable");
             elseif (Ib(i) > n)
                 for j = 1:length(In)
                     if In(j) < n+1
@@ -73,6 +60,17 @@ function [X,C] = Simplex(c,A,b,verbose,mini)
         Ib = sort(Ib);
         In = sort(In);
         In=In(1:n-m);
+    end
+    if (verbose)
+        fprintf('\nThis is the beginning of Phase 2 \n')
+        fprintf('\nA = \n')
+        disp(A)
+        fprintf('\nc = \n ')
+        disp(c)
+        fprintf('\nBasic Indexes (Ib) = \n')
+        disp(Ib)
+        fprintf('\nNon Basic Indexes (In) = \n')
+        disp(In)
     end
     [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini);
     X = zeros(1,n);

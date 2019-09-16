@@ -13,11 +13,11 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini)
         else
             condicion = ismember(1,(Cn2 < 0));
         end
-        n = 0;
+        count = 0;
         while (condicion)
-            n=n+1;
+            count=count+1;
             if (verbose)
-                fprintf('Iteration # %d', n) ;
+                fprintf('Iteration # %d', count) ;
             end
             if (mini == 0)
                 [ck,k] = max(Cn2); %Then Ik enters the base
@@ -50,15 +50,26 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini)
             Zn = Cb*Yn;
             Cn2 = Cn-Zn;
             b2 = inv(B)*b';
+            
 
             if(verbose)
-                fprintf('\nIb =')
+                [m,n] = size(A);
+                X = zeros(1,n);
+                Y = zeros(1,n);
+                for i = 1:length(X)
+                    if (ismember(i,Ib))
+                        X(i) = b2(find(Ib==i));
+                        Y(i) = Yk(find(Ib==i));
+                    end
+                end
+                fprintf('\nIb = \n')
                 disp(Ib)
-                fprintf('\nIn =')
-                disp(In)
-                fprintf('\nb2 =')
-                disp(b2)
-
+                fprintf('\nepsilon = \n')
+                disp(ck2)
+                fprintf('\nyk = \n')
+                disp(Y)
+                fprintf('\nX  = \n')
+                disp(X)
             end 
             
 
@@ -66,7 +77,10 @@ function [Ib,In,b2] = CalcSol(c,A,b,Ib,In,verbose,mini)
                 condicion = ismember(1,(Cn2 > 0));
             else
                 condicion = ismember(1,(Cn2 < 0));
-        end 
+            end
+        end
+        if (verbose)
+            fprintf('------------------------------------------------------- \n')
         end
 end
 
