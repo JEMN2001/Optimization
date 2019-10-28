@@ -1,4 +1,4 @@
-function [a,b] = Dicotomic_Search(f,I,e)
+function out = Dicotomic_Search(f,I,e)
     p = 1;
     while(p == 1)
         if (I(2)-I(1) <= e)
@@ -15,5 +15,6 @@ function [a,b] = Dicotomic_Search(f,I,e)
             I(1) = lam;
         end
     end
+    out = (a+b)/2;
 end
 
